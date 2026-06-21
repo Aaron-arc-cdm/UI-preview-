@@ -3,149 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avelon – Refined</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Exo+2:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Celestial AI – App Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --bg-deep: #040810;
+            --neon-primary: #00C8FF;
+            --neon-violet: #7B2FFF;
+            --text-main: #E0E0FF;
+            --card-bg: #0C121F;
+            --border-color: #1E2A3A;
+            --glow-cyan: 0 0 10px #00C8FF, 0 0 20px #00C8FF44;
+            --glow-violet: 0 0 10px #7B2FFF, 0 0 20px #7B2FFF44;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #050510;
+            background: #010308;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             font-family: 'Exo 2', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; color: white;
+            padding: 20px;
         }
-        .phone {
-            width: 390px; height: 844px; background: #040810;
-            border-radius: 40px; overflow: hidden; position: relative;
-            border: 1px solid rgba(255,255,255,0.08);
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background: var(--bg-deep);
+            border-radius: 40px;
+            border: 3px solid #1A1A2E;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0, 200, 255, 0.15), 0 0 120px rgba(123, 47, 255, 0.1), inset 0 0 0 2px rgba(255, 255, 255, 0.03);
         }
+
+        /* Status Bar */
         .status-bar {
-            padding: 16px 24px 8px; display: flex;
-            justify-content: space-between; font-size: 12px; color: #B0B8C8;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Exo 2', sans-serif;
+            opacity: 0.8;
+        }
+        .status-bar .time {
+            font-weight: 700;
+        }
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .status-icons span {
+            font-size: 0.7rem;
+        }
+        .notch {
+            width: 120px;
+            height: 30px;
+            background: #000;
+            border-radius: 0 0 20px 20px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
         }
 
-        /* ---- PURPLISH‑BLUISH ORB (unmistakable) ---- */
-        .orb-container { display: flex; justify-content: center; margin: 30px 0 16px; }
-        .orb {
-            width: 140px; height: 140px; border-radius: 50%;
-            /* Deep purple center, fading to cyan edge */
-            background: radial-gradient(circle at 40% 40%, #9B30FF, #7B2FFF 40%, #00C8FF 100%);
-            /* Double glow: purple close, cyan wide */
-            box-shadow: 0 0 50px rgba(123,47,255,0.7), 0 0 100px rgba(0,200,255,0.4);
-            animation: pulse 2.5s ease-in-out infinite;
-            cursor: pointer;
-        }
-        @keyframes pulse {
-            0%, 100% { 
-                box-shadow: 0 0 50px rgba(123,47,255,0.7), 0 0 100px rgba(0,200,255,0.4);
-            }
-            50% { 
-                box-shadow: 0 0 80px rgba(123,47,255,1.0), 0 0 140px rgba(0,200,255,0.6);
-            }
+        /* Main Content Area */
+        .screen-content {
+            height: calc(100% - 44px - 70px);
+            overflow-y: auto;
+            padding: 10px 20px 20px;
         }
 
-        /* ---- NEON‑GLOW CHAT BUBBLES (unmistakable) ---- */
-        .bubble {
-            max-width: 80%; padding: 14px 20px; border-radius: 18px;
-            font-size: 14px; line-height: 1.5; margin: 8px 0;
-        }
-        .bubble.user {
-            margin-left: auto;
-            background: rgba(0,200,255,0.15);
-            /* Cyan neon edge */
-            box-shadow: 0 0 15px rgba(0,200,255,0.5), 0 0 35px rgba(0,200,255,0.15);
-        }
-        .bubble.ai {
-            margin-right: auto;
-            background: rgba(10,22,40,0.8);
-            /* Purple neon edge */
-            box-shadow: 0 0 15px rgba(123,47,255,0.5), 0 0 35px rgba(123,47,255,0.15);
-        }
-
-        .input-bar {
-            display: flex; gap: 10px; padding: 12px 20px; align-items: center;
-            position: absolute; bottom: 80px; left: 0; right: 0;
-            background: rgba(4,8,16,0.85);
-            backdrop-filter: blur(12px);
-        }
-        .input-bar input {
-            flex:1; background: rgba(10,22,40,0.7); border:1px solid rgba(255,255,255,0.1);
-            border-radius: 99px; padding: 12px 18px; color: white;
-            font-size:14px; outline:none;
-        }
-        .input-bar button {
-            background: #00C8FF; color: #040810; border:none;
-            border-radius:50%; width:46px; height:46px; font-size:18px;
-            cursor:pointer;
-            box-shadow: 0 0 15px rgba(0,200,255,0.5);
-        }
-
-        /* ---- GLASS CARD ---- */
-        .card {
-            background: rgba(10,22,40,0.5);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 18px; padding: 16px; margin: 12px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-
-        h2 {
-            font-family: 'Orbitron', sans-serif; font-weight:600;
-            font-size: 18px; text-align: center; padding: 16px 0;
-        }
-
-        /* ---- BOTTOM NAV (frosted glass) ---- */
+        /* Bottom Navigation */
         .bottom-nav {
-            position: absolute; bottom:0; left:0; right:0; height: 72px;
-            background: rgba(4,8,16,0.8);
-            backdrop-filter: blur(12px);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(12, 18, 31, 0.95);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 15px 10px;
+            backdrop-filter: blur(10px);
         }
         .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            color: #B0B8C8; font-size: 10px; cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #555;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 500;
         }
-        .nav-item.active { color: #00C8FF; }
-        .nav-icon { font-size: 20px; }
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            transition: all 0.3s;
+        }
+        .nav-item.active {
+            color: var(--neon-primary);
+            text-shadow: 0 0 8px var(--neon-primary);
+        }
+        .nav-item.active svg {
+            stroke: var(--neon-primary);
+            filter: drop-shadow(0 0 6px var(--neon-primary));
+        }
 
-        .disclaimer {
-            background: rgba(255,193,7,0.1); border-left:3px solid #FFC107;
-            padding:8px 12px; border-radius:4px; margin: 8px 20px;
-            font-size:11px; color:#FFC107;
-            position: absolute; bottom: 150px; left:0; right:0;
+        /* Screens */
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+
+        /* Typography */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--neon-primary);
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px var(--neon-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: var(--neon-primary);
+            box-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
+        }
+
+        /* HOME HUD */
+        .orb-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .ai-orb {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #0a2a40, #040810);
+            box-shadow: 0 0 30px var(--neon-primary), 0 0 60px var(--neon-primary), 0 0 90px rgba(0, 200, 255, 0.4), inset 0 0 30px rgba(0, 200, 255, 0.2);
+            position: relative;
+            animation: orbPulse 3s infinite ease-in-out;
+            border: 2px solid rgba(0, 200, 255, 0.5);
+        }
+        @keyframes orbPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 30px var(--neon-primary), 0 0 60px var(--neon-primary), 0 0 90px rgba(0, 200, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 45px var(--neon-primary), 0 0 80px var(--neon-primary), 0 0 120px rgba(0, 200, 255, 0.6);
+            }
+        }
+        .orb-inner {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, rgba(0, 200, 255, 0.4), transparent 70%);
+            animation: orbInner 4s infinite ease-in-out;
+        }
+        @keyframes orbInner {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 0.9;
+            }
+        }
+        .mood-badge {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            border: 1px solid var(--neon-primary);
+            border-radius: 12px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            color: var(--neon-primary);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 6px var(--neon-primary);
+            white-space: nowrap;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-main);
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+        .quick-action:hover {
+            opacity: 1;
+            color: var(--neon-primary);
+        }
+        .quick-action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .usage-bar {
+            background: var(--card-bg);
+            border-radius: 20px;
+            height: 6px;
+            overflow: hidden;
+            margin: 8px 0 15px;
+        }
+        .usage-fill {
+            width: 35%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-primary), var(--neon-violet));
+            border-radius: 20px;
+            box-shadow: 0 0 8px var(--neon-primary);
+        }
+
+        .offline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(123, 47, 255, 0.2);
+            border: 1px solid var(--neon-violet);
+            border-radius: 12px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            color: var(--neon-violet);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* CHAT */
+        .chat-msg {
+            display: flex;
+            margin-bottom: 16px;
+        }
+        .chat-msg.user {
+            justify-content: flex-end;
+        }
+        .bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            position: relative;
+        }
+        .user .bubble {
+            background: rgba(0, 200, 255, 0.15);
+            border: 1px solid rgba(0, 200, 255, 0.4);
+            color: var(--text-main);
+            border-bottom-right-radius: 4px;
+        }
+        .ai .bubble {
+            background: rgba(123, 47, 255, 0.1);
+            border: 1px solid rgba(123, 47, 255, 0.35);
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 0 8px rgba(123, 47, 255, 0.15);
+        }
+        .bubble .timestamp {
+            font-size: 0.6rem;
+            opacity: 0.6;
+            margin-top: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .ai-label {
+            font-size: 0.6rem;
+            color: var(--neon-violet);
+            margin-bottom: 4px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 4px var(--neon-violet);
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: var(--text-main);
+            font-family: 'Exo 2', sans-serif;
+            outline: none;
+        }
+        .chat-input:focus {
+            border-color: var(--neon-primary);
+            box-shadow: 0 0 8px var(--neon-primary);
+        }
+        .send-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--neon-primary);
+            border: none;
+            color: #040810;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 12px var(--neon-primary);
+            transition: 0.2s;
+        }
+        .send-btn:hover {
+            box-shadow: 0 0 20px var(--neon-primary);
+        }
+        .mic-toggle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* VOICE */
+        .voice-waveform {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 100px;
+            margin: 20px 0;
+        }
+        .wave-bar {
+            width: 4px;
+            background: var(--neon-primary);
+            border-radius: 2px;
+            animation: wave 0.8s infinite ease-in-out;
+            box-shadow: 0 0 6px var(--neon-primary);
+        }
+        @keyframes wave {
+            0%,
+            100% {
+                height: 20px;
+            }
+            50% {
+                height: 80px;
+            }
+        }
+        .wave-bar:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .wave-bar:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .wave-bar:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        .wave-bar:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+        .wave-bar:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+        .wave-bar:nth-child(6) {
+            animation-delay: 0.5s;
+        }
+        .wave-bar:nth-child(7) {
+            animation-delay: 0.6s;
+        }
+        .wave-bar:nth-child(8) {
+            animation-delay: 0.7s;
+        }
+        .command-ring {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .command-chip {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            color: var(--text-main);
+            cursor: pointer;
+            font-family: 'Exo 2', sans-serif;
+        }
+        .command-chip:hover {
+            border-color: var(--neon-primary);
+            color: var(--neon-primary);
+            box-shadow: 0 0 8px var(--neon-primary);
+        }
+
+        /* SETTINGS */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+        .setting-row:hover {
+            color: var(--neon-primary);
+        }
+        .setting-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1rem;
+        }
+        .setting-left {
+            display: flex;
+            align-items: center;
+        }
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: var(--border-color);
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .toggle-switch.on {
+            background: var(--neon-primary);
+            box-shadow: 0 0 8px var(--neon-primary);
+        }
+        .toggle-switch::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+        }
+        .toggle-switch.on::after {
+            left: 22px;
+        }
+
+        /* Scrollbar */
+        .screen-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .screen-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .screen-content::-webkit-scrollbar-thumb {
+            background: var(--neon-primary);
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 420px) {
+            .phone-frame {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+            .notch {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-<div class="phone">
-    <div class="status-bar"><span>9:41</span><span>🔋 ▮▮▮▮</span></div>
 
-    <div class="orb-container"><div class="orb"></div></div>
-    <h2>How can I help?</h2>
-    <p style="text-align:center; color:#B0B8C8; font-size:13px; margin-bottom:10px;">Tap the orb or say "Hey Avelon"</p>
+    <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <span>📶</span> <span>📶</span> <span>🔋</span>
+            </div>
+        </div>
 
-    <div class="card"><p style="font-size:13px;">🌤️ <b>Good morning!</b> It's 22°C in Kampala. Your first meeting is at 10:00 AM.</p></div>
+        <!-- HOME SCREEN -->
+        <div class="screen-content screen active" id="screen-home">
+            <div class="section-title" style="text-align:center;">Celestial AI</div>
+            <div class="orb-container">
+                <div class="ai-orb"><div class="orb-inner"></div></div>
+                <div class="mood-badge">✨ IDLE</div>
+            </div>
+            <div class="quick-actions">
+                <div class="quick-action"><div class="quick-action-icon">💬</div>Chat</div>
+                <div class="quick-action"><div class="quick-action-icon">🎙️</div>Voice</div>
+                <div class="quick-action"><div class="quick-action-icon">🫀</div>Health</div>
+                <div class="quick-action"><div class="quick-action-icon">⚙️</div>Settings</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.7rem; color:var(--text-main); opacity:0.7;">
+                <span>Free tier usage today</span><span>35 / 100</span>
+            </div>
+            <div class="usage-bar"><div class="usage-fill"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="offline-badge">📴 Offline Ready</div>
+                <span style="font-size:0.7rem; color:var(--neon-primary);">Next reset: 00:00 UTC</span>
+            </div>
+            <div class="card" style="margin-top:15px;">
+                <div style="font-family:'Orbitron',sans-serif;font-size:0.8rem;color:var(--neon-violet);margin-bottom:6px;">📋 QUICK INSIGHTS</div>
+                <div style="font-size:0.8rem;color:var(--text-main);">Good afternoon! You walked 4,200 steps today. Don't forget to log your water intake.</div>
+            </div>
+        </div>
 
-    <!-- Chat bubbles with obvious neon glow -->
-    <div style="padding: 0 20px;">
-        <div class="bubble ai">Hello! I'm Avelon, your voice‑first AI assistant.</div>
-        <div class="bubble user">Tell me a joke</div>
-        <div class="bubble ai">Why do programmers prefer dark mode? Because light attracts bugs! 🐛</div>
+        <!-- CHAT SCREEN -->
+        <div class="screen-content screen" id="screen-chat">
+            <div class="section-title">💬 Conversation</div>
+            <div class="chat-msg ai">
+                <div class="bubble">
+                    <div class="ai-label">AI-GENERATED</div>
+                    Hello! I'm Celestial AI, your personal assistant. How can I help you today?
+                    <div class="timestamp">12:34</div>
+                </div>
+            </div>
+            <div class="chat-msg user">
+                <div class="bubble">
+                    What can you tell me about the weather in Kampala?
+                    <div class="timestamp">12:35</div>
+                </div>
+            </div>
+            <div class="chat-msg ai">
+                <div class="bubble">
+                    <div class="ai-label">AI-GENERATED</div>
+                    Currently in Kampala, it's partly cloudy with a temperature of 26°C. Expect scattered thunderstorms later this evening. Humidity is at 72%.
+                    <div class="timestamp">12:35</div>
+                </div>
+            </div>
+            <div class="chat-msg user">
+                <div class="bubble">
+                    Thanks! Remind me to bring an umbrella.
+                    <div class="timestamp">12:36</div>
+                </div>
+            </div>
+            <div class="chat-msg ai">
+                <div class="bubble">
+                    <div class="ai-label">AI-GENERATED</div>
+                    Reminder set! I'll notify you at 5 PM: "Don't forget your umbrella." ☔
+                    <div class="timestamp">12:36</div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="mic-toggle">🎤</div>
+                <input type="text" class="chat-input" placeholder="Type a message...">
+                <button class="send-btn">➤</button>
+            </div>
+        </div>
+
+        <!-- VOICE ASSISTANT SCREEN -->
+        <div class="screen-content screen" id="screen-voice">
+            <div class="section-title" style="text-align:center;">🎙️ Voice Assistant</div>
+            <div class="orb-container" style="margin:10px 0;">
+                <div class="ai-orb" style="width:90px;height:90px;box-shadow:0 0 20px var(--neon-violet),0 0 40px var(--neon-violet);"><div class="orb-inner"></div></div>
+                <div class="mood-badge" style="border-color:var(--neon-violet);color:var(--neon-violet);text-shadow:0 0 6px var(--neon-violet);">🎤 LISTENING</div>
+            </div>
+            <div class="voice-waveform">
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            </div>
+            <div style="text-align:center; color:var(--text-main); opacity:0.8; font-size:0.9rem;">Say "Hey Celestial" followed by a command</div>
+            <div class="command-ring">
+                <div class="command-chip">Set a timer</div>
+                <div class="command-chip">Play music</div>
+                <div class="command-chip">Call Mum</div>
+                <div class="command-chip">Turn on Wi‑Fi</div>
+                <div class="command-chip">Log water 500ml</div>
+                <div class="command-chip">What's the weather?</div>
+                <div class="command-chip">Navigate to Kampala</div>
+                <div class="command-chip">Open Spotify</div>
+            </div>
+        </div>
+
+        <!-- SETTINGS SCREEN -->
+        <div class="screen-content screen" id="screen-settings">
+            <div class="section-title">⚙️ Settings</div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">🔊</div>Voice & Wake Word</div><span style="opacity:0.5;">→</span></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">🌐</div>Language</div><span>English →</span></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">🎨</div>Appearance</div><span>Neon Dark →</span></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">🔐</div>Privacy & Data</div><span style="opacity:0.5;">→</span></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">☁️</div>Cloud Backup</div><div class="toggle-switch on"></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">🔔</div>Notifications</div><div class="toggle-switch on"></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">📴</div>Offline Mode</div><div class="toggle-switch"></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">♿</div>Accessibility</div><span style="opacity:0.5;">→</span></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">💎</div>Subscription</div><span>Free →</span></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-icon">ℹ️</div>About</div><span>v6 Pro →</span></div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-screen="home" onclick="switchScreen('home', this)">
+                <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" data-screen="chat" onclick="switchScreen('chat', this)">
+                <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <span>Chat</span>
+            </div>
+            <div class="nav-item" data-screen="voice" onclick="switchScreen('voice', this)">
+                <svg viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+                <span>Voice</span>
+            </div>
+            <div class="nav-item" data-screen="settings" onclick="switchScreen('settings', this)">
+                <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>Settings</span>
+            </div>
+        </div>
     </div>
 
-    <div class="disclaimer">⚠️ I am an AI assistant, not a doctor, lawyer, or financial advisor.</div>
+    <script>
+        function switchScreen(screenName, navElement) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            // Show selected screen
+            document.getElementById('screen-' + screenName).classList.add('active');
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            navElement.classList.add('active');
+        }
 
-    <div class="input-bar">
-        <input type="text" placeholder="Type a message...">
-        <button>➤</button>
-    </div>
-
-    <div class="bottom-nav">
-        <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item"><div class="nav-icon">💬</div><span>Chat</span></div>
-        <div class="nav-item"><div class="nav-icon">🎤</div><span>Voice</span></div>
-        <div class="nav-item"><div class="nav-icon">⚙️</div><span>Settings</span></div>
-    </div>
-</div>
+        // Toggle switches
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('on');
+            });
+        });
+    </script>
 </body>
 </html>
